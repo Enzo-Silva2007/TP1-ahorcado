@@ -1,0 +1,57 @@
+{
+    "dificultad": {
+        "facil": [
+            "perro",
+            "gato",
+            "mesa",
+            "silla",
+            "reloj",
+            "queso",
+            "playa",
+            "nieve",
+            "fuego",
+            "globo",
+            "lapiz",
+            "coche",
+            "avion",
+            "barco"
+        ],
+        "medio": [
+            "lluvia",
+            "bosque",
+            "tiburon",
+            "barril",
+            "camino",
+            "puente",
+            "trenes",
+            "planeta",
+            "jirafa",
+            "volcan",
+            "ventana",
+            "escuela"
+        ],
+        "dificil": [
+            "montania",
+            "castillo",
+            "sombrero",
+            "estrella"
+        ]
+    },
+    "jugador": [
+        {
+            "nombre": "franco",
+            "gano": 0
+        },
+        {
+            "nombre": "enzo",
+            "gano": 0
+        }
+    ],
+    "jugador_conectado": {
+        "nombre": "enzo",
+        "gano": 0
+    },
+    "opciones": {
+        "dificultad": "facil"
+    }
+}

@@ -1,0 +1,17 @@
+Hola. Aca ya declare todos los modulos que va a tener el juego (sujeto a cambios).
+Van a necesitar dos librerias para que funcione bien: consoledraw y keyboard.
+consoledraw sirve para dibujar una consola que no se actuliza, nos va a servir a la hora de dibujar
+por pantalla y keyboard sirve para detectar eventos de teclado.
+En test.py les deje algunos ejemplos de uso, cualquier cosa consulten o vayan a la docu oficial
+
+consoledraw : https://github.com/Matthias1590/ConsoleDraw
+keyboard : https://github.com/boppreh/keyboard
+
+Por convención y facilidad, vamos a utilizar español en todo el proyecto.
+
+Flujo del juego.
+
+datos.json contiene todas las cofiguraciones del juego. Funciona como base de datos.
+
+Modelo: es el archivo que interactua con el json. Contiene todas las funciones necesarias para el parseo, insercion y eliminación de datos.
+
