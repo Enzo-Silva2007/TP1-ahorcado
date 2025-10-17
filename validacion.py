@@ -29,4 +29,21 @@ def nombre_valido(nombre) :
 
     return True
 
+def letra_valida(letra) :
 
+    if len(letra) > 1 or re.findall("[ñÑ]", letra)  :
+        return False
+    try :
+        str(letra)
+        return True
+    except ValueError:
+        return False
+
+def palabra_valida(palabra_secreta, palabra) :
+    if len(palabra_secreta) != len(palabra) or re.findall("[ñÑ]", palabra):
+        return False
+    try :
+        str(palabra)
+        return True
+    except ValueError :
+        return False
