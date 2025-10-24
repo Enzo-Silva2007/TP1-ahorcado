@@ -11,6 +11,9 @@ PANTALLA_MENU = [
 ║                                                    ║
 ║                        OPCIONES                    ║
 ║                                                    ║
+║                                                    ║
+║                         SALIR                      ║
+║                                                    ║
 ╚════════════════════════════════════════════════════╝
 """,
 
@@ -25,6 +28,25 @@ PANTALLA_MENU = [
 ║                  ║    OPCIONES    ║                ║
 ║                  ╚════════════════╝                ║
 ║                                                    ║
+║                                                    ║
+║                         SALIR                      ║
+║                                                    ║
+╚════════════════════════════════════════════════════╝
+""",
+"""
+╔════════════════════════════════════════════════════╗
+║                                                    ║
+║              BIENVENIDO AL AHORCADO                ║
+║                                                    ║
+║                    EMPEZAR JUEGO                   ║
+║                                                    ║
+║                                                    ║
+║                       OPCIONES                     ║
+║                                                    ║
+║                                                    ║
+║                  ╔════════════════╗                ║
+║                  ║      SALIR     ║                ║
+║                  ╚════════════════╝                ║
 ╚════════════════════════════════════════════════════╝
 """
 ]
@@ -99,6 +121,14 @@ PANTALLA_JUEGO = [
    Palabra: {palabra}
 
    Letras usadas: {letras_usadas}
+
+   Si quiere adivinar letra, presione "p". Si
+   quiere intentar con la palabra entera,
+   presione "ESPACIO".
+   Si no quiere continuar jugando, presione
+   "ESC".
+
+   {mensaje}
 
 ╠══════════════════════════════════════════════╣
                     {dibujo}
@@ -175,18 +205,23 @@ ESCENARIO = [
 
 PANTALLA_PERDISTE = [
 """
-╔════════════════════════════════╗
-
-            ¡PERDISTE!
-
-        La palabra era: {palabra}
-
-       Presiona ESPACIO para
-          volver al menú...
-
-╚════════════════════════════════╝
+╔════════════════════════════════════════════════════════════════╗
+║                                                                ║
+║                        ████████████████                        ║
+║                        █  ¡PERDISTE!  █                        ║
+║                        ████████████████                        ║
+║                                                                ║
+                     La palabra era: {palabra}
+║                                                                ║
+║          ──────────────────────────────────────────            ║
+║                                                                ║
+║                 Presiona ESC para volver al menú               ║
+║                 O ENTER para jugar otra partida                ║
+║                                                                ║
+╚════════════════════════════════════════════════════════════════╝
 """
 ]
+
 
 PANTALLA_JUGADOR = [
 """
@@ -213,4 +248,23 @@ PANTALLA_JUGADOR = [
 ══════════════════════════════════════════════════════
 """
 ]
+
+PANTALLA_VICTORIA = [
+"""
+╔════════════════════════════════════════════════════╗
+║                                                    ║
+║                 ¡FELICIDADES!                      ║
+║                 ¡GANASTE!                          ║
+║                                                    ║
+║             Has adivinado la palabra.              ║
+║                                                    ║
+                  Palabra: {palabra}
+║                                                    ║
+║          Presiona ESC para volver al menú          ║
+║          o ENTER para jugar otra partida.          ║
+║                                                    ║
+╚════════════════════════════════════════════════════╝
+"""
+]
+
 

@@ -55,6 +55,19 @@ def obtener_mayor_ganador() :
 
     return mayor_ganador
 
+def agregar_gano(jugador) :
+    datos = obtener_datos()
+    jugador_actual = obtener_jugador(jugador)
+
+    for j in datos["jugador"] :
+        if j["nombre"] == jugador :
+            j["gano"] += 1
+            datos["jugador_conectado"]["gano"] += 1
+            continue
+
+    with open(DATOS + ".json", "w") as archivo :
+        archivo.write(json.dumps(datos, indent=4))
+
 def establecer_jugador_conectado(nombre) :
     datos = obtener_datos()
     jugador_conectado = {}
@@ -112,3 +125,4 @@ def agregar_palabra(dificultad, nueva_palabra) :
     with open(DATOS + ".json", "w") as archivo:
         archivo.write(json.dumps(datos, indent=4))
     return True
+

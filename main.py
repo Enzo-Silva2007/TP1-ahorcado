@@ -2,6 +2,7 @@
 import controlador as controlador
 from time import sleep
 
+
 def main() :
     estado_pantalla = "menu"
     salida = True
@@ -9,6 +10,7 @@ def main() :
     while salida :
         if estado_pantalla == "menu" :
             estado_pantalla = controlador.pantalla_menu()
+            sleep(1)
         elif estado_pantalla == "jugador" :
             estado_pantalla = controlador.pantalla_jugador()
         elif estado_pantalla == "opciones" :
@@ -16,6 +18,7 @@ def main() :
             sleep(1)
         elif estado_pantalla == "juego" :
             estado_pantalla = controlador.pantalla_juego()
-
+        elif estado_pantalla == "salir" :
+            salida = False
 main()
 
