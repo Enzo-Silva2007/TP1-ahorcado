@@ -15,3 +15,52 @@ datos.json contiene todas las cofiguraciones del juego. Funciona como base de da
 
 Modelo: es el archivo que interactua con el json. Contiene todas las funciones necesarias para el parseo, insercion y eliminación de datos.
 
+Correccioes:
+
+
+Funcion Main:
+- Los estados tienen que ser CONSTANTES.
+
+Controlador:
+- Cambiar nombres de controlador: pantalla, etc.
+
+- Cmabiar controlador pantalla_juego()
+ :
+
+  if posicion_dibujo == 6 :
+            estado = pantalla_perder(palabra_secreta)
+            if estado == "menu" :
+                salida = False
+            mensaje = "Partida reiniciada. Una nueva palabra se ha generado.\nBuena suerte"
+            posicion_palabra += 1
+            posicion_dibujo = 0
+            palabra_secreta = palabras[posicion_palabra]
+            palabra_formateada = list(formatear_palabra(palabra_secreta))
+            letras_usadas = []
+
+No es necesario continuar la partida, simplemente que lo lleve denuevo al inicio. Terminar la ejecucion e ir main:
+def pantalla_perder(palabra_secreta) :
+    estado = ""
+    salida = True
+
+    while salida :
+        with CONSOLA :
+            CONSOLA.print(dibujo.PANTALLA_PERDISTE[0].format(palabra=palabra_secreta))
+        evento = keyboard.read_event()
+        if evento.event_type == keyboard.KEY_DOWN :
+            if evento.name == "esc" :
+                estado = "menu"
+                salida = False
+            elif evento.name == "enter" :
+                estado = "seguir"
+                salida = False
+    return estado
+
+perder devuelve dos estados que se evaluan en pantalla_juego. Ese estado tiene que ser controlado por main y no por el flujo de la
+pantalla.
+
+- mensaje = ingresar_letra(letras_usadas, palabra_formateada, palabra_secreta) : en este caso, es mejor devolver una tupla.
+Para poder devolver un mensaje y un estado (True o False).
+
+Constantes: crear archivo de constantes para controlar flujo main (estados posibles por callback de funciones).
+
