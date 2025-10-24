@@ -232,7 +232,7 @@ def ingresar_letra(letras_usadas, palabra_formateada, palabra_secreta) :
             if l == letra :
                 palabra_formateada[i] = letra
 
-        return "Muy bien, seguí asi crack, máquina, distinto."
+        return "Muy bien, segui asi crack."
     else :
         return None
 

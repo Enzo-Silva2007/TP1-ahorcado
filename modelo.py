@@ -65,11 +65,9 @@ def agregar_gano(jugador) :
             datos["jugador_conectado"]["gano"] += 1
             continue
 
-
     with open(DATOS + ".json", "w") as archivo :
         archivo.write(json.dumps(datos, indent=4))
 
-agregar_gano("enzo")
 def establecer_jugador_conectado(nombre) :
     datos = obtener_datos()
     jugador_conectado = {}

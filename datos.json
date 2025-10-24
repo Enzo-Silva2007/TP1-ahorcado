@@ -44,7 +44,7 @@
         },
         {
             "nombre": "enzo",
-            "gano": 15
+            "gano": 18
         },
         {
             "nombre": "brisa",
@@ -53,9 +53,9 @@
     ],
     "jugador_conectado": {
         "nombre": "enzo",
-        "gano": 15
+        "gano": 18
     },
     "opciones": {
-        "dificultad": "facil"
+        "dificultad": "medio"
     }
 }
