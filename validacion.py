@@ -1,8 +1,8 @@
 import re
 
-#Funciones del modelo
+# funciones del modelo
 
-def tamanio_palabra(dificultad, nueva_palabra) :
+def tamanio_palabra(dificultad, nueva_palabra):
     longitud = len(nueva_palabra)
 
     if dificultad == "facil":
@@ -17,33 +17,32 @@ def tamanio_palabra(dificultad, nueva_palabra) :
 
     return True
 
-#Funciones del controlador
 
-def nombre_valido(nombre) :
-    longitud = len(nombre)
+# funciones del controlador
 
-    if longitud < 4 or longitud > 13:
+def nombre_valido(nombre):
+    if not isinstance(nombre, str):
         return False
-    elif re.findall("[ñÑ]", nombre) :
+    n = nombre.strip().lower()
+    if len(n) < 4 or len(n) > 13:
         return False
+    # solo letras a-z sin acentos ni ñ
+    return re.fullmatch(r"[a-z]+", n) is not None
 
-    return True
 
-def letra_valida(letra) :
+def letra_valida(letra):
+    if not isinstance(letra, str):
+        return False
+    l = letra.strip().lower()
+    # tiene que ser una sola letra a-z
+    return re.fullmatch(r"[a-z]", l) is not None
 
-    if len(letra) > 1 or re.findall("[ñÑ]", letra)  :
-        return False
-    try :
-        str(letra)
-        return True
-    except ValueError:
-        return False
 
-def palabra_valida(palabra_secreta, palabra) :
-    if len(palabra_secreta) != len(palabra) or re.findall("[ñÑ]", palabra):
+def palabra_valida(palabra_secreta, palabra):
+    if not isinstance(palabra, str):
         return False
-    try :
-        str(palabra)
-        return True
-    except ValueError :
+    p = palabra.strip().lower()
+    if len(palabra_secreta) != len(p):
         return False
+    # todas letras a-z, sin acentos; longitud correcta
+    return re.fullmatch(r"[a-z]+", p) is not None

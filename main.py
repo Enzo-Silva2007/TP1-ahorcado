@@ -1,24 +1,25 @@
-#Librerias necesarias para el funcionamiento correcto del proyecto: consoledraw y keyboard
 import controlador as controlador
-from time import sleep
+import constantes as C
 
-
-def main() :
-    estado_pantalla = "menu"
+def main():
+    estado_pantalla = C.ESTADO_MENU
     salida = True
 
-    while salida :
-        if estado_pantalla == "menu" :
-            estado_pantalla = controlador.pantalla_menu()
-            sleep(1)
-        elif estado_pantalla == "jugador" :
-            estado_pantalla = controlador.pantalla_jugador()
-        elif estado_pantalla == "opciones" :
-            estado_pantalla = controlador.pantalla_opcion()
-            sleep(1)
-        elif estado_pantalla == "juego" :
-            estado_pantalla = controlador.pantalla_juego()
-        elif estado_pantalla == "salir" :
+    while salida:
+        if estado_pantalla == C.ESTADO_MENU:
+            estado_pantalla = controlador.mostrar_menu()
+        elif estado_pantalla == C.ESTADO_JUGADOR:
+            estado_pantalla = controlador.gestionar_jugador()
+        elif estado_pantalla == C.ESTADO_OPCIONES:
+            estado_pantalla = controlador.mostrar_opciones()
+        elif estado_pantalla == C.ESTADO_JUEGO:
+            estado_pantalla = controlador.mostrar_juego()
+        elif estado_pantalla == C.ESTADO_SEGUIR:
+            estado_pantalla = C.ESTADO_MENU
+        elif estado_pantalla == C.ESTADO_SALIR:
             salida = False
-main()
+        else:
+            estado_pantalla = C.ESTADO_MENU
 
+if __name__ == "__main__":
+    main()

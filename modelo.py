@@ -125,4 +125,3 @@ def agregar_palabra(dificultad, nueva_palabra) :
     with open(DATOS + ".json", "w") as archivo:
         archivo.write(json.dumps(datos, indent=4))
     return True
-

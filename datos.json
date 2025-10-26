@@ -49,11 +49,27 @@
         {
             "nombre": "brisa",
             "gano": 0
+        },
+        {
+            "nombre": "candelovich",
+            "gano": 1
+        },
+        {
+            "nombre": "candela",
+            "gano": 2
+        },
+        {
+            "nombre": "candelarda",
+            "gano": 1
+        },
+        {
+            "nombre": "nachu",
+            "gano": 0
         }
     ],
     "jugador_conectado": {
-        "nombre": "enzo",
-        "gano": 18
+        "nombre": "nachu",
+        "gano": 0
     },
     "opciones": {
         "dificultad": "medio"
