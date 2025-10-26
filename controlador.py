@@ -141,7 +141,7 @@ def mostrar_juego():
                 if not acierto:
                     posicion_dibujo += 1
                     if mensaje is None:
-                        mensaje = "Fallaste."
+                        mensaje = "Uh, mal ahí. Para la proxima pa."
                 if "_" not in palabra_formateada:
                     estado = mostrar_victoria(palabra_secreta)
                     return estado
@@ -196,26 +196,26 @@ def formatear_palabra(palabra_secreta):
 def ingresar_letra(letras_usadas, palabra_formateada, palabra_secreta):
     letra = input("Ingrese una sola letra: ").lower().strip()
     if not validacion.letra_valida(letra):
-        return "Has ingresado más de una letra o un carácter inválido.", False
+        return "Ingresaste más de una letra o un carácter inválido.", False
     letra = str(letra)
     if letra in letras_usadas:
-        return "Ya has usado esta letra", False
+        return "Ya usaste esta letra", False
     letras_usadas.append(letra)
     if letra in palabra_secreta:
         for i, l in enumerate(palabra_secreta):
             if l == letra:
                 palabra_formateada[i] = letra
-        return "Muy bien, seguí así.", True
+        return "Muy bien, seguí así crack.", True
     else:
         return None, False
 
 
 def ingresar_palabra(palabra_secreta):
-    palabra = input("Ingrese la palabra completa; si fallas, perderá automáticamente: ").lower().strip()
+    palabra = input("Ingrese la palabra completa; si fallas, perdés automáticamente: ").lower().strip()
     if not validacion.palabra_valida(palabra_secreta, palabra):
         return C.ESTADO_MENU
     if palabra_secreta == palabra:
         return mostrar_victoria(palabra_secreta)
     else:
         return mostrar_derrota(palabra_secreta)
-
+    

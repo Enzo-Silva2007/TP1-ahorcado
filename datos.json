@@ -65,11 +65,15 @@
         {
             "nombre": "nachu",
             "gano": 0
+        },
+        {
+            "nombre": "candelina",
+            "gano": 1
         }
     ],
     "jugador_conectado": {
-        "nombre": "nachu",
-        "gano": 0
+        "nombre": "candelina",
+        "gano": 1
     },
     "opciones": {
         "dificultad": "medio"
