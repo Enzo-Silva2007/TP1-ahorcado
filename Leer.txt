@@ -64,7 +64,12 @@ Para poder devolver un mensaje y un estado (True o False).
 
 Constantes: crear archivo de constantes para controlar flujo main (estados posibles por callback de funciones).
 
-cambios made by can :B
+cambios made by can :B 
+25/10
 - agregue las constantes para estados y teclas (constantes.py) y las implemente en main y controlador para no tener q repetir strings
 - limpie algunos mensajes (tipo q no haya caracteres raros o eso) y mejore prompts (por ej: la confirmacion S/N al crear usuario)
 - modifique un toque las validaciones: nombres/letras/palabras solo a-z y longitudes
+27/10
+- agregue un debounce (bloqueo x tecla para ignorar repeticiones hasta q se suelte je) en el controlador por error de parpadeo al apretar una tecla (en registrar/ingresar usuario y en escribir letra/palabra)
+- cambie las constantes a español (hincha huevos)
+- cambie la tupla (mensaje, acierto) en la func ingresar_letra
