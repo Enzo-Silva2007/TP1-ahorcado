@@ -63,17 +63,17 @@
             "gano": 1
         },
         {
-            "nombre": "nachu",
-            "gano": 0
-        },
-        {
             "nombre": "candelina",
             "gano": 1
+        },
+        {
+            "nombre": "cancan",
+            "gano": 0
         }
     ],
     "jugador_conectado": {
-        "nombre": "candelina",
-        "gano": 1
+        "nombre": "cancan",
+        "gano": 0
     },
     "opciones": {
         "dificultad": "medio"
