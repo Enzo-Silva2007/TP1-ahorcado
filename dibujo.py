@@ -212,11 +212,13 @@ PANTALLA_PERDISTE = [
 ║                        ████████████████                        ║
 ║                                                                ║
                      La palabra era: {palabra}
+                     Mayor ganador : {mayor_ganador}
+
 ║                                                                ║
 ║          ──────────────────────────────────────────            ║
 ║                                                                ║
 ║                 Presiona ESC para volver al menú               ║
-║                 O ENTER para jugar otra partida                ║
+║                                                                ║
 ║                                                                ║
 ╚════════════════════════════════════════════════════════════════╝
 """
@@ -239,8 +241,6 @@ PANTALLA_JUGADOR = [
                      su nombre.
 
      Presione R para registrar un nuevo jugador.
-     Seguidamente presione S si quiere continuar o
-            N para cancelar la operación
    Presione I si quiere usar un jugador existente.
 
 {mensaje}
@@ -259,9 +259,11 @@ PANTALLA_VICTORIA = [
 ║             Has adivinado la palabra.              ║
 ║                                                    ║
                   Palabra: {palabra}
+                  Mayor ganador : {mayor_ganador}
+
 ║                                                    ║
 ║          Presiona ESC para volver al menú          ║
-║          o ENTER para jugar otra partida.          ║
+║                                                    ║
 ║                                                    ║
 ╚════════════════════════════════════════════════════╝
 """

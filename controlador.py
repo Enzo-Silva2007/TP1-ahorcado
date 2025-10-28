@@ -1,250 +1,237 @@
-import dibujo as dibujo
+import dibujo
 from consoledraw import Console
 import keyboard
-import validacion as validacion
-import modelo as modelo
+import validacion
+import modelo
 import random
+import constantes as C
 
-#Consola principal
 CONSOLA = Console()
 
-#Funciones menu
-def pantalla_menu() :
+
+def mostrar_menu():
     salida = True
     estado = ""
     posicion = 0
-
-    while salida :
-        with CONSOLA :
+    total = len(dibujo.PANTALLA_MENU)
+    while salida:
+        with CONSOLA:
             CONSOLA.print(dibujo.PANTALLA_MENU[posicion])
         evento = keyboard.read_event()
-        if evento.event_type == keyboard.KEY_DOWN :
-            if evento.name == "w" :
-                if posicion > 0 :
-                    posicion -= 1
-            elif evento.name == "s" :
-                if posicion < 2 :
-                    posicion += 1
-            elif evento.name == "enter" :
-                if posicion == 0 :
-                    estado = "jugador"
-                    salida = False
-                elif posicion == 1 :
-                    estado = "opciones"
-                    salida = False
-                elif posicion == 2 :
-                    estado = "salir"
-                    salida = False
+        if evento.event_type == keyboard.KEY_DOWN:
+            if evento.name == C.K_ARRIBA and posicion > 0:
+                posicion -= 1
+            elif evento.name == C.K_ABAJO and posicion < total - 1:
+                posicion += 1
+            elif evento.name == C.K_ENTRAR:
+                if posicion == 0:
+                    estado = C.ESTADO_JUGADOR
+                elif posicion == 1:
+                    estado = C.ESTADO_OPCIONES
+                elif posicion == 2:
+                    estado = C.ESTADO_SALIR
+                salida = False
     return estado
 
-def pantalla_jugador() :
+
+def gestionar_jugador():
     salida = True
     estado = ""
-    nombre = ""
     mensaje = ""
-
-    while salida :
-        with CONSOLA :
+    tecla_bloqueada = None
+    while salida:
+        with CONSOLA:
             CONSOLA.print(dibujo.PANTALLA_JUGADOR[0].format(mensaje=mensaje))
-
-        if keyboard.is_pressed("r") :
-            nombre = input("Ingrese el nuevo jugador: ")
-
-            if not validacion.nombre_valido(nombre) :
-                mensaje = "Tu nombre contiene una ñ o no tiene la longitud suficiente"
-                nombre = ""
-            elif modelo.obtener_jugador(nombre) :
-                mensaje = "El nombre ya existe"
-                nombre = ""
-            else :
-                salir = True
-                while salir:
-                    if keyboard.is_pressed("s"):
-                        modelo.nuevo_jugador(nombre)
-                        modelo.establecer_jugador_conectado(nombre)
-                        estado = "juego"
-                        salida = False
-                        salir = False
-                    elif keyboard.is_pressed("n"):
-                        mensaje = "Operación cancelada."
-                        nombre = ""
-                        salir = False
-        elif keyboard.is_pressed("i") :
-            nombre = input("Ingrese el jugador existente: ")
-            if modelo.obtener_jugador(nombre) :
-                modelo.establecer_jugador_conectado(nombre)
-                estado = "juego"
+        evento = keyboard.read_event()
+        if evento.event_type == keyboard.KEY_UP and tecla_bloqueada == evento.name:
+            tecla_bloqueada = None
+            continue
+        if evento.event_type == keyboard.KEY_DOWN:
+            if evento.name in (C.K_REGISTRAR, C.K_INGRESAR):
+                if tecla_bloqueada == evento.name:
+                    continue
+                tecla_bloqueada = evento.name
+            if evento.name == C.K_REGISTRAR:
                 salida = False
-            else :
-                mensaje = "No existe ese usuario, vuelva a intentarlo."
+                nombre = input("Ingrese el nuevo jugador: ").strip()
+                if not validacion.nombre_valido(nombre):
+                    mensaje = "Nombre inválido: debe tener 4 a 13 letras sin acentos."
+                    salida = True
+                elif modelo.obtener_jugador(nombre):
+                    mensaje = "El nombre ya existe"
+                    salida = True
+                else:
+                    print("Confirmar creación del jugador. Presiona 's' para confirmar o 'n' para cancelar.")
+                    confirmar = True
+                    while confirmar:
+                        e = keyboard.read_event()
+                        if e.event_type == keyboard.KEY_DOWN:
+                            if e.name == C.K_SI:
+                                modelo.nuevo_jugador(nombre)
+                                modelo.establecer_jugador_conectado(nombre)
+                                estado = C.ESTADO_JUEGO
+                                salida = False
+                                confirmar = False
+                            elif e.name == C.K_NO:
+                                mensaje = "Operación cancelada."
+                                confirmar = False
+                                salida = True
 
+            elif evento.name == C.K_INGRESAR:
+                salida = False
+                nombre = input("Ingrese el jugador existente: ").strip()
+                if modelo.obtener_jugador(nombre):
+                    modelo.establecer_jugador_conectado(nombre)
+                    estado = C.ESTADO_JUEGO
+                    salida = False
+                else:
+                    mensaje = "No existe ese usuario, vuelva a intentarlo."
+                    salida = True
     return estado
 
-def pantalla_opcion() :
-    estado = "menu"
+
+def mostrar_opciones():
     salida = True
+    estado = C.ESTADO_MENU
     posicion = 0
-
-    while salida :
-        with CONSOLA :
+    total = len(dibujo.PANTALLA_OPCIONES)
+    while salida:
+        with CONSOLA:
             CONSOLA.print(dibujo.PANTALLA_OPCIONES[posicion])
-            CONSOLA.print(posicion)
-
         evento = keyboard.read_event()
         if evento.event_type == keyboard.KEY_DOWN:
-            if evento.name == "w":
-                if posicion > 0:
-                    posicion -= 1
-            elif evento.name == "s":
-                if posicion < 2:
-                    posicion += 1
-            elif evento.name == "enter":
-                salida = False
+            if evento.name == C.K_ARRIBA and posicion > 0:
+                posicion -= 1
+            elif evento.name == C.K_ABAJO and posicion < total - 1:
+                posicion += 1
+            elif evento.name == C.K_ENTRAR:
                 if posicion == 0:
                     modelo.establecer_opciones("facil")
-                    salida = False
                 elif posicion == 1:
                     modelo.establecer_opciones("medio")
-                    salida = False
                 elif posicion == 2:
                     modelo.establecer_opciones("dificil")
-                    salida = False
+                salida = False
     return estado
 
-def pantalla_juego() :
+
+def mostrar_juego():
     jugador_actual = modelo.obtener_jugador_conectado()
     opciones = modelo.obtener_opciones()
     palabras = modelo.obtener_palabras(opciones["dificultad"])
     palabras = random.sample(palabras, len(palabras))
-    letras_usadas = []
-    evento = ""
 
+    if not palabras:
+        return C.ESTADO_MENU
+
+    letras_usadas = []
     estado = ""
     posicion_dibujo = 0
-    posicion_palabra = 0
     mensaje = ""
     salida = True
-    palabra_secreta = palabras[posicion_palabra]
+    palabra_secreta = palabras[0]
     palabra_formateada = list(formatear_palabra(palabra_secreta))
-
-
-    while salida :
-        with CONSOLA :
-            CONSOLA.print(dibujo.PANTALLA_JUEGO[0].format(nombre=jugador_actual["nombre"], palabra="".join(palabra_formateada), letras_usadas=",".join(letras_usadas),mensaje=mensaje ,dibujo=dibujo.ESCENARIO[posicion_dibujo]))
-            CONSOLA.print(palabras[posicion_palabra])
-
-        if posicion_dibujo == 6 :
-            estado = pantalla_perder(palabra_secreta)
-            if estado == "menu" :
-                salida = False
-            mensaje = "Partida reiniciada. Una nueva palabra se ha generado.\nBuena suerte"
-            posicion_palabra += 1
-            posicion_dibujo = 0
-            palabra_secreta = palabras[posicion_palabra]
-            palabra_formateada = list(formatear_palabra(palabra_secreta))
-            letras_usadas = []
-        else :
-            evento = keyboard.read_event()
-
-        if evento.event_type == keyboard.KEY_DOWN :
-            if evento.name == "p" :
-                mensaje = ingresar_letra(letras_usadas, palabra_formateada, palabra_secreta)
-                if mensaje == None :
+    tecla_bloqueada = None
+    while salida:
+        with CONSOLA:
+            CONSOLA.print(dibujo.PANTALLA_JUEGO[0].format(
+                nombre=jugador_actual["nombre"],
+                palabra="".join(palabra_formateada),
+                letras_usadas=",".join(letras_usadas),
+                mensaje=mensaje,
+                dibujo=dibujo.ESCENARIO[posicion_dibujo]
+            ))
+        if posicion_dibujo == 6:
+            estado = mostrar_derrota(palabra_secreta)
+            return estado
+        evento = keyboard.read_event()
+        if evento.event_type == keyboard.KEY_UP and tecla_bloqueada == evento.name:
+            tecla_bloqueada = None
+            continue
+        if evento.event_type == keyboard.KEY_DOWN:
+            if evento.name in (C.K_JUGAR, C.K_ESPACIO):
+                if tecla_bloqueada == evento.name:
+                    continue
+                tecla_bloqueada = evento.name
+            if evento.name == C.K_JUGAR:
+                mensaje_acierto, acierto = ingresar_letra(letras_usadas, palabra_formateada, palabra_secreta)
+                if acierto == None:
+                    mensaje = mensaje_acierto
+                elif not acierto :
                     posicion_dibujo += 1
-                    mensaje = "Uh, mal ahí. Para la proxima pa."
-            elif evento.name == "space" :
-                mensaje = ingresar_palabra(palabra_secreta)
-                if mensaje == "menu" :
-                    estado = mensaje
-                    salida = False
-                elif mensaje == "seguir" :
-                    mensaje = "Partida reiniciada. Una nueva palabra se ha generado.\nBuena suerte"
-                    posicion_palabra += 1
-                    posicion_dibujo = 0
-                    palabra_secreta = palabras[posicion_palabra]
-                    palabra_formateada = list(formatear_palabra(palabra_secreta))
-                    letras_usadas = []
-            elif evento.name == "esc" :
-                estado = "menu"
-                salida = False
+                    mensaje = mensaje_acierto
+                elif acierto :
+                    mensaje = mensaje_acierto
+
+                if "_" not in palabra_formateada:
+                    estado = mostrar_victoria(palabra_secreta)
+                    return estado
+            elif evento.name == C.K_ESPACIO:
+                estado = ingresar_palabra(palabra_secreta)
+                return estado
+            elif evento.name == C.K_ESC:
+                return C.ESTADO_MENU
     return estado
 
 
-def pantalla_victoria(palabra_secreta) :
+def mostrar_victoria(palabra_secreta):
+    mayor_ganador = modelo.obtener_mayor_ganador()
     jugador_actual = modelo.obtener_jugador_conectado()
     modelo.agregar_gano(jugador_actual["nombre"])
     estado = ""
     salida = True
-
-    while salida :
-        with CONSOLA :
-            CONSOLA.print(dibujo.PANTALLA_VICTORIA[0].format(palabra=palabra_secreta))
+    while salida:
+        with CONSOLA:
+            CONSOLA.print(dibujo.PANTALLA_VICTORIA[0].format(palabra=palabra_secreta, mayor_ganador=mayor_ganador["nombre"] + "\nVictorias: " + str(mayor_ganador["gano"])))
         evento = keyboard.read_event()
-        if evento.event_type == keyboard.KEY_DOWN :
-            if evento.name == "esc" :
-                estado = "menu"
-                salida = False
-            elif evento.name == "enter" :
-                estado = "seguir"
+        if evento.event_type == keyboard.KEY_DOWN:
+            if evento.name == C.K_ESC:
+                estado = C.ESTADO_MENU
                 salida = False
     return estado
 
-def pantalla_perder(palabra_secreta) :
+
+def mostrar_derrota(palabra_secreta):
+    mayor_ganador = modelo.obtener_mayor_ganador()
     estado = ""
     salida = True
-
-    while salida :
-        with CONSOLA :
-            CONSOLA.print(dibujo.PANTALLA_PERDISTE[0].format(palabra=palabra_secreta))
+    while salida:
+        with CONSOLA:
+            CONSOLA.print(dibujo.PANTALLA_PERDISTE[0].format(palabra=palabra_secreta, mayor_ganador=mayor_ganador["nombre"] + "\nVictorias: " + str(mayor_ganador["gano"])))
         evento = keyboard.read_event()
-        if evento.event_type == keyboard.KEY_DOWN :
-            if evento.name == "esc" :
-                estado = "menu"
-                salida = False
-            elif evento.name == "enter" :
-                estado = "seguir"
+        if evento.event_type == keyboard.KEY_DOWN:
+            if evento.name == C.K_ESC:
+                estado = C.ESTADO_MENU
                 salida = False
     return estado
 
 
-#Funciones de control
+def formatear_palabra(palabra_secreta):
+    return ["_"] * len(palabra_secreta)
 
-def formatear_palabra(palabra_secreta) :
-    palabra_formateada = ""
-    for i in range(len(palabra_secreta)) :
-        palabra_formateada += "_"
-    return palabra_formateada
 
-def ingresar_letra(letras_usadas, palabra_formateada, palabra_secreta) :
-    letra = input("Igrese una sola letra: ").lower().strip()
-
-    if not validacion.letra_valida(letra) :
-        return "Has ingresado mas de una letra \no un caracter inválido."
-
+def ingresar_letra(letras_usadas, palabra_formateada, palabra_secreta):
+    letra = input("Ingrese una sola letra: ").lower().strip()
+    if not validacion.letra_valida(letra):
+        return "Ingresaste más de una letra o un carácter inválido.", None
     letra = str(letra)
-    if letra in letras_usadas :
-        return "Ya has usado esta letra"
-
+    if letra in letras_usadas:
+        return "Ya usaste esta letra", None
     letras_usadas.append(letra)
-
-    if letra in palabra_secreta :
-        for i, l in enumerate(palabra_secreta) :
-            if l == letra :
+    if letra in palabra_secreta:
+        for i, l in enumerate(palabra_secreta):
+            if l == letra:
                 palabra_formateada[i] = letra
+        return "Muy bien, seguí así crack.", True
+    else:
+        return "Uh mal ahi, no era esa letra", False
 
-        return "Muy bien, segui asi crack."
-    else :
-        return None
 
-def ingresar_palabra(palabra_secreta) :
-    palabra = input("Ingrese la palabra completa, si fallas, perderá automáticamente: ").lower().strip()
-
-    if not validacion.palabra_valida(palabra_secreta, palabra) :
-        return "Ingresaste un caracter inválido \no la palabra no tiene la misma longitud."
-
-    if palabra_secreta == palabra :
-        mensaje = pantalla_victoria(palabra_secreta)
-        return mensaje
-    else :
-        mensaje = pantalla_perder(palabra_secreta)
-        return mensaje
+def ingresar_palabra(palabra_secreta):
+    palabra = input("Ingresa la palabra completa; si fallas, perdes automaticamente: ").lower().strip()
+    if not validacion.palabra_valida(palabra_secreta, palabra):
+        return mostrar_derrota(palabra_secreta)
+    if palabra_secreta == palabra:
+        return mostrar_victoria(palabra_secreta)
+    else:
+        return mostrar_derrota(palabra_secreta)

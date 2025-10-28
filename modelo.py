@@ -107,22 +107,3 @@ def obtener_palabras(dificultad) :
     datos = obtener_datos()
     palabras = datos["dificultad"].get(dificultad)
     return palabras
-
-def agregar_palabra(dificultad, nueva_palabra) :
-    if not dificultad or not nueva_palabra:
-        return None
-
-    if not validacion.tamanio_palabra(dificultad, nueva_palabra) :
-        return False
-
-    datos = obtener_datos()
-
-    if nueva_palabra in datos["dificultad"][dificultad] :
-        return False
-
-    datos["dificultad"].get(dificultad).append(nueva_palabra)
-
-    with open(DATOS + ".json", "w") as archivo:
-        archivo.write(json.dumps(datos, indent=4))
-    return True
-
