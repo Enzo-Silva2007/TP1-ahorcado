@@ -44,7 +44,7 @@
         },
         {
             "nombre": "enzo",
-            "gano": 18
+            "gano": 21
         },
         {
             "nombre": "brisa",
@@ -72,10 +72,10 @@
         }
     ],
     "jugador_conectado": {
-        "nombre": "cancan",
-        "gano": 0
+        "nombre": "enzo",
+        "gano": 21
     },
     "opciones": {
-        "dificultad": "medio"
+        "dificultad": "dificil"
     }
 }

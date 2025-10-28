@@ -120,15 +120,16 @@ def mostrar_juego():
     opciones = modelo.obtener_opciones()
     palabras = modelo.obtener_palabras(opciones["dificultad"])
     palabras = random.sample(palabras, len(palabras))
+
     if not palabras:
         return C.ESTADO_MENU
+
     letras_usadas = []
     estado = ""
     posicion_dibujo = 0
-    posicion_palabra = 0
     mensaje = ""
     salida = True
-    palabra_secreta = palabras[posicion_palabra]
+    palabra_secreta = palabras[0]
     palabra_formateada = list(formatear_palabra(palabra_secreta))
     tecla_bloqueada = None
     while salida:
@@ -153,11 +154,15 @@ def mostrar_juego():
                     continue
                 tecla_bloqueada = evento.name
             if evento.name == C.K_JUGAR:
-                mensaje, acierto = ingresar_letra(letras_usadas, palabra_formateada, palabra_secreta)
-                if not acierto:
+                mensaje_acierto, acierto = ingresar_letra(letras_usadas, palabra_formateada, palabra_secreta)
+                if acierto == None:
+                    mensaje = mensaje_acierto
+                elif not acierto :
                     posicion_dibujo += 1
-                    if mensaje is None:
-                        mensaje = "Uh, mal ahí. Para la proxima pa."
+                    mensaje = mensaje_acierto
+                elif acierto :
+                    mensaje = mensaje_acierto
+
                 if "_" not in palabra_formateada:
                     estado = mostrar_victoria(palabra_secreta)
                     return estado
@@ -170,37 +175,33 @@ def mostrar_juego():
 
 
 def mostrar_victoria(palabra_secreta):
+    mayor_ganador = modelo.obtener_mayor_ganador()
     jugador_actual = modelo.obtener_jugador_conectado()
     modelo.agregar_gano(jugador_actual["nombre"])
     estado = ""
     salida = True
     while salida:
         with CONSOLA:
-            CONSOLA.print(dibujo.PANTALLA_VICTORIA[0].format(palabra=palabra_secreta))
+            CONSOLA.print(dibujo.PANTALLA_VICTORIA[0].format(palabra=palabra_secreta, mayor_ganador=mayor_ganador["nombre"] + "\nVictorias: " + str(mayor_ganador["gano"])))
         evento = keyboard.read_event()
         if evento.event_type == keyboard.KEY_DOWN:
             if evento.name == C.K_ESC:
                 estado = C.ESTADO_MENU
-                salida = False
-            elif evento.name == C.K_ENTRAR:
-                estado = C.ESTADO_SEGUIR
                 salida = False
     return estado
 
 
 def mostrar_derrota(palabra_secreta):
+    mayor_ganador = modelo.obtener_mayor_ganador()
     estado = ""
     salida = True
     while salida:
         with CONSOLA:
-            CONSOLA.print(dibujo.PANTALLA_PERDISTE[0].format(palabra=palabra_secreta))
+            CONSOLA.print(dibujo.PANTALLA_PERDISTE[0].format(palabra=palabra_secreta, mayor_ganador=mayor_ganador["nombre"] + "\nVictorias: " + str(mayor_ganador["gano"])))
         evento = keyboard.read_event()
         if evento.event_type == keyboard.KEY_DOWN:
             if evento.name == C.K_ESC:
                 estado = C.ESTADO_MENU
-                salida = False
-            elif evento.name == C.K_ENTRAR:
-                estado = C.ESTADO_SEGUIR
                 salida = False
     return estado
 
@@ -212,10 +213,10 @@ def formatear_palabra(palabra_secreta):
 def ingresar_letra(letras_usadas, palabra_formateada, palabra_secreta):
     letra = input("Ingrese una sola letra: ").lower().strip()
     if not validacion.letra_valida(letra):
-        return "Ingresaste más de una letra o un carácter inválido.", False
+        return "Ingresaste más de una letra o un carácter inválido.", None
     letra = str(letra)
     if letra in letras_usadas:
-        return "Ya usaste esta letra", False
+        return "Ya usaste esta letra", None
     letras_usadas.append(letra)
     if letra in palabra_secreta:
         for i, l in enumerate(palabra_secreta):
@@ -223,13 +224,13 @@ def ingresar_letra(letras_usadas, palabra_formateada, palabra_secreta):
                 palabra_formateada[i] = letra
         return "Muy bien, seguí así crack.", True
     else:
-        return None, False
+        return "Uh mal ahi, no era esa letra", False
 
 
 def ingresar_palabra(palabra_secreta):
-    palabra = input("Ingresa la palabra completa; si fallas, perdés automáticamente: ").lower().strip()
+    palabra = input("Ingresa la palabra completa; si fallas, perdes automaticamente: ").lower().strip()
     if not validacion.palabra_valida(palabra_secreta, palabra):
-        return C.ESTADO_MENU
+        return mostrar_derrota(palabra_secreta)
     if palabra_secreta == palabra:
         return mostrar_victoria(palabra_secreta)
     else:

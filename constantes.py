@@ -4,7 +4,6 @@ ESTADO_JUGADOR = "jugador"
 ESTADO_OPCIONES = "opciones"
 ESTADO_JUEGO = "juego"
 ESTADO_SALIR = "salir"
-ESTADO_SEGUIR = "seguir"
 
 # teclas necesarias para el juego
 K_ARRIBA = "w"

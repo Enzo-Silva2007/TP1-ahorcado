@@ -14,8 +14,6 @@ def main():
             estado_pantalla = controlador.mostrar_opciones()
         elif estado_pantalla == C.ESTADO_JUEGO:
             estado_pantalla = controlador.mostrar_juego()
-        elif estado_pantalla == C.ESTADO_SEGUIR:
-            estado_pantalla = C.ESTADO_MENU
         elif estado_pantalla == C.ESTADO_SALIR:
             salida = False
         else:
