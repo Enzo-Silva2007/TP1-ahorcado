@@ -44,7 +44,7 @@
         },
         {
             "nombre": "enzo",
-            "gano": 21
+            "gano": 23
         },
         {
             "nombre": "brisa",
@@ -69,13 +69,33 @@
         {
             "nombre": "cancan",
             "gano": 0
+        },
+        {
+            "nombre": "enzocandelita",
+            "gano": 0
+        },
+        {
+            "nombre": "adssdsdsdsd",
+            "gano": 0
+        },
+        {
+            "nombre": "candelita",
+            "gano": 0
+        },
+        {
+            "nombre": "juanijuanito",
+            "gano": 0
+        },
+        {
+            "nombre": "marcos",
+            "gano": 0
         }
     ],
     "jugador_conectado": {
-        "nombre": "enzo",
-        "gano": 21
+        "nombre": "marcos",
+        "gano": 0
     },
     "opciones": {
-        "dificultad": "dificil"
+        "dificultad": "medio"
     }
 }
