@@ -38,27 +38,30 @@ def gestionar_jugador():
     salida = True
     estado = ""
     mensaje = ""
-    tecla_bloqueada = None
+    nombre = ""
     while salida:
         with CONSOLA:
             CONSOLA.print(dibujo.PANTALLA_JUGADOR[0].format(mensaje=mensaje))
         evento = keyboard.read_event()
-        if evento.event_type == keyboard.KEY_UP and tecla_bloqueada == evento.name:
-            tecla_bloqueada = None
-            continue
         if evento.event_type == keyboard.KEY_DOWN:
-            if evento.name in (C.K_REGISTRAR, C.K_INGRESAR):
-                if tecla_bloqueada == evento.name:
-                    continue
-                tecla_bloqueada = evento.name
             if evento.name == C.K_REGISTRAR:
-                salida = False
-                nombre = input("Ingrese el nuevo jugador: ").strip()
+                print("Escriba el usuario y presione Enter a continuación para validarlo.")
+                confirmar = True
+                while confirmar :
+                    letra = keyboard.read_event()
+                    if letra.event_type == keyboard.KEY_DOWN :
+                        if letra.name == "enter" :
+                            confirmar = False
+                        elif validacion.letra_valida(letra.name) :
+                            nombre += letra.name
+
                 if not validacion.nombre_valido(nombre):
-                    mensaje = "Nombre inválido: debe tener 4 a 13 letras sin acentos."
+                    mensaje = f"Nombre {nombre}, inválido: debe tener 4 a 13 letras sin acentos."
+                    nombre = ""
                     salida = True
                 elif modelo.obtener_jugador(nombre):
-                    mensaje = "El nombre ya existe"
+                    mensaje = f"El nombre {nombre} ya existe"
+                    nombre = ""
                     salida = True
                 else:
                     print("Confirmar creación del jugador. Presiona 's' para confirmar o 'n' para cancelar.")
@@ -78,15 +81,23 @@ def gestionar_jugador():
                                 salida = True
 
             elif evento.name == C.K_INGRESAR:
-                salida = False
-                nombre = input("Ingrese el jugador existente: ").strip()
+                print("Ingrese el jugador existente, seguidamente presione Enter para continuar.")
+                confirmar = True
+                while confirmar :
+                    letra = keyboard.read_event()
+                    if letra.event_type == keyboard.KEY_DOWN :
+                        if letra.name == "enter" :
+                            confirmar = False
+                        elif validacion.letra_valida(letra.name) :
+                            nombre += letra.name
+
                 if modelo.obtener_jugador(nombre):
                     modelo.establecer_jugador_conectado(nombre)
                     estado = C.ESTADO_JUEGO
                     salida = False
                 else:
-                    mensaje = "No existe ese usuario, vuelva a intentarlo."
-                    salida = True
+                    mensaje = f"No existe el usuario: {nombre}, vuelva a intentarlo."
+                    nombre = ""
     return estado
 
 
@@ -145,14 +156,7 @@ def mostrar_juego():
             estado = mostrar_derrota(palabra_secreta)
             return estado
         evento = keyboard.read_event()
-        if evento.event_type == keyboard.KEY_UP and tecla_bloqueada == evento.name:
-            tecla_bloqueada = None
-            continue
         if evento.event_type == keyboard.KEY_DOWN:
-            if evento.name in (C.K_JUGAR, C.K_ESPACIO):
-                if tecla_bloqueada == evento.name:
-                    continue
-                tecla_bloqueada = evento.name
             if evento.name == C.K_JUGAR:
                 mensaje_acierto, acierto = ingresar_letra(letras_usadas, palabra_formateada, palabra_secreta)
                 if acierto == None:
@@ -211,7 +215,17 @@ def formatear_palabra(palabra_secreta):
 
 
 def ingresar_letra(letras_usadas, palabra_formateada, palabra_secreta):
-    letra = input("Ingrese una sola letra: ").lower().strip()
+    confirmar = True
+    letra = ""
+    print("Ingrese la letra, seguidamente Enter para confirmar.")
+    while confirmar :
+        ingreso = keyboard.read_event()
+        if ingreso.event_type == keyboard.KEY_DOWN :
+            if ingreso.name == "enter" :
+                confirmar = False
+            else :
+                letra += ingreso.name
+
     if not validacion.letra_valida(letra):
         return "Ingresaste más de una letra o un carácter inválido.", None
     letra = str(letra)
@@ -228,7 +242,18 @@ def ingresar_letra(letras_usadas, palabra_formateada, palabra_secreta):
 
 
 def ingresar_palabra(palabra_secreta):
-    palabra = input("Ingresa la palabra completa; si fallas, perdes automaticamente: ").lower().strip()
+    print("Ingrese la palabra completa. Si fallas, pierdes automáticamente. Presione Enter para confirmar.")
+
+    palabra = ""
+    confirmar = True
+    while confirmar :
+        letra = keyboard.read_event()
+        if letra.event_type == keyboard.KEY_DOWN :
+            if letra.name == "enter" :
+                confirmar = False
+            elif validacion.letra_valida(letra.name) :
+                palabra += letra.name
+
     if not validacion.palabra_valida(palabra_secreta, palabra):
         return mostrar_derrota(palabra_secreta)
     if palabra_secreta == palabra:
