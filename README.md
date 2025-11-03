@@ -94,11 +94,11 @@ Ahorcado/
 
 Proyecto desarrollado por:  
  
-- Gian Franco Caputo  
-- Enzo Silva  
-- Candela Mañas
-- Thiago Alegre  
-- Germán Gómez  
+- Caputo Gian Franco 
+- Silva Enzo  
+- Mañas Candela
+- Alegre Thiago  
+- Gonzales German  
 
 ---
 
